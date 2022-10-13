@@ -1,0 +1,22 @@
+server:
+  error:
+    include-message: always
+
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:123456}
+
+volumes:
+  cache:
+
+services:
+  database:
+    image: postgres:13
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=123456
+    volumes:
+      - cache:/var/lib/postgresql/data
