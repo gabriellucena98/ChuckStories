@@ -2,6 +2,7 @@ package com.project.lucena.redis.repository
 
 import com.project.lucena.redis.model.Chuck
 import com.project.lucena.redis.repository.mapper.ChuckMapper
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 
@@ -46,7 +47,7 @@ class Repository(
     fun getAllChucks(): List<Chuck> {
         return namedParameterJdbcTemplate.query(SELECT_CHUCKS, ChuckMapper())
     }
-
+    @Cacheable("getChuckById")
     fun getChuckById(id: String): Chuck? {
         return namedParameterJdbcTemplate.query(SELECT_CHUCK_BY_ID, mapOf("id" to id), ChuckMapper()).firstOrNull()
     }
@@ -63,5 +64,8 @@ class Repository(
             "value" to chuck.value
         )
         namedParameterJdbcTemplate.update(UPDATE_CHUCK_BY_ID, params)
+    }
+    fun validateChuck(id: String): Boolean {
+        return namedParameterJdbcTemplate.query(SELECT_CHUCK_BY_ID, mapOf("id" to id), ChuckMapper()).isNotEmpty()
     }
 }

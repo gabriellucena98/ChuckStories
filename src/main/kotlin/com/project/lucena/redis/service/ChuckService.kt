@@ -16,20 +16,17 @@ class ChuckService(
     fun chuckRandom(): Chuck {
         return chuckClient.chuckRandom()
     }
-
     fun chuckById(id: String): Chuck {
         return chuckClient.chuckById(id)
     }
-
     fun saveChuckById(id: String) {
-        if (validateChuck(id) != null) {
+        if (validateChuck(id)) {
             throw AlreadyExistsException(
                 message = ChuckError.CHUCK_ALREADY_EXISTS.message,
                 Ids = id,
                 code = ChuckError.CHUCK_ALREADY_EXISTS.code
             )
         }
-
         val chuckValue = chuckById(id)
         repository.saveChuckById(
             id = id,
@@ -54,11 +51,9 @@ class ChuckService(
         getChuckById(id)
         repository.deleteChuckById(id)
     }
-
-    fun validateChuck(id: String): Chuck? {
-        return repository.getChuckById(id)
+    private fun validateChuck(id: String): Boolean {
+        return repository.validateChuck(id)
     }
-
     fun updateChuckById(id: String, chuck: Chuck) {
         getChuckById(id)
         repository.updateChuckById(id, chuck)

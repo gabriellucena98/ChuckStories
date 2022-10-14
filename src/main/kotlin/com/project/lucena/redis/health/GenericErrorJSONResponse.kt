@@ -2,7 +2,7 @@ package com.project.lucena.redis.health
 
 import java.io.Serializable
 
-class GenericErrorJSONResponse(
+open class GenericErrorJSONResponse(
     private var message: String?,
     private var timestamp: Long?,
     private var code: String?
